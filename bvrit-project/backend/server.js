@@ -39,7 +39,8 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀  Backend API running  →  http://localhost:${PORT}`);
-  console.log(`📦  Seed data:           →  http://localhost:${PORT}/api/seed`);
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Backend API running on port ${PORT}`);
+  console.log(`📦 Seed data → /api/seed`);
 });
