@@ -169,4 +169,19 @@ router.delete('/:eventId', adminOnly, async (req, res) => {
   }
 });
 
+/* ─── PATCH /events/:eventId/activate  — Activate an event ─── */
+router.patch('/:eventId/activate', adminOnly, async (req, res) => {
+  try {
+    const event = await Event.findOneAndUpdate(
+      { eventId: req.params.eventId },
+      { status: 'active' },
+      { new: true }
+    );
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+    res.json({ message: 'Event activated', event });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 module.exports = router;
