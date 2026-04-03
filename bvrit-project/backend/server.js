@@ -22,9 +22,9 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err  => { console.error('❌  MongoDB error:', err.message); process.exit(1); });
 
 // ─── API Routes ───────────────────────────────────────────────────────────────
-app.use('/users',  require('./routes/users'));
-app.use('/events', require('./routes/events'));
-app.use('/seed',   require('./routes/seed'));
+app.use('/api/users',  require('./routes/users'));
+app.use('/api/events', require('./routes/events'));
+app.use('/api/seed',   require('./routes/seed'));
 
 app.get('/api', (req, res) => {
   res.send('API is working');
