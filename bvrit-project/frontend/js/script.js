@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.disabled=true; btn.textContent='Registering...';
     const fb = document.getElementById('regFeedback');
     try {
-      const res  = await fetch(`${API_BASE}/api/events/${eventId}/register`, {
+      const res  = await fetch(`${API_BASE}/events/${eventId}/register`, {
         method:'POST', headers:{'Content-Type':'application/json','x-username':localStorage.getItem('loggedInUser')}
       });
       const data = await res.json();

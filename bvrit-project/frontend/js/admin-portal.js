@@ -30,7 +30,7 @@ function showSection(id, btn) {
 
 async function loadStats() {
   try {
-    const res  = await fetch(`${API_BASE}/api/events/stats`, { headers: getHeaders() });
+    const res  = await fetch(`${API_BASE}/events/stats`, { headers: getHeaders() });
     const data = await res.json();
     document.getElementById('totalEvents').textContent        = data.totalEvents        || 0;
     document.getElementById('totalUsers').textContent         = data.totalUsers         || 0;
@@ -42,7 +42,7 @@ async function loadStats() {
 async function loadAllEvents() {
   const tbody = document.getElementById('eventsTableBody');
   try {
-    const res    = await fetch(`${API_BASE}/api/events/all`, { headers: getHeaders() });
+    const res    = await fetch(`${API_BASE}/events/all`, { headers: getHeaders() });
     const events = await res.json();
     if (!events.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">No events yet.</td></tr>'; return; }
     tbody.innerHTML = events.map(ev => `
@@ -68,7 +68,7 @@ async function loadAllEvents() {
 async function toggleEventStatus(eventId, currentStatus) {
   const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
   try {
-    await fetch(`${API_BASE}/api/events/${eventId}`, { method:'PUT', headers: getHeaders(), body: JSON.stringify({ status: newStatus }) });
+    await fetch(`${API_BASE}/events/${eventId}`, { method:'PUT', headers: getHeaders(), body: JSON.stringify({ status: newStatus }) });
     showAlert('Event status updated');
     loadAllEvents();
   } catch(e) { showAlert('Failed to update', 'error'); }
@@ -77,7 +77,7 @@ async function toggleEventStatus(eventId, currentStatus) {
 async function deleteEvent(eventId) {
   if (!confirm('Delete this event permanently?')) return;
   try {
-    await fetch(`${API_BASE}/api/events/${eventId}`, { method:'DELETE', headers: getHeaders() });
+    await fetch(`${API_BASE}/events/${eventId}`, { method:'DELETE', headers: getHeaders() });
     showAlert('Event deleted');
     loadAllEvents();
     loadStats();
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body.time = `${hh===0?12:hh>12?hh-12:hh}:${m} ${ampm}`;
       }
       try {
-        const res  = await fetch(`${API_BASE}/api/events`, { method:'POST', headers: getHeaders(), body: JSON.stringify(body) });
+        const res  = await fetch(`${API_BASE}/events`, { method:'POST', headers: getHeaders(), body: JSON.stringify(body) });
         const data = await res.json();
         if (res.ok) { showAlert('✅ Event created!'); form.reset(); loadStats(); showSection('events',null); }
         else showAlert(data.error || 'Failed to create event', 'error');
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadAttendanceDropdown() {
   const sel = document.getElementById('attendanceEventSelect');
   try {
-    const res    = await fetch(`${API_BASE}/api/events/all`, { headers: getHeaders() });
+    const res    = await fetch(`${API_BASE}/events/all`, { headers: getHeaders() });
     const events = await res.json();
     sel.innerHTML = '<option value="">-- Select Event --</option>' +
       events.map(ev => `<option value="${ev.eventId}">${ev.name}</option>`).join('');
@@ -156,7 +156,7 @@ async function loadAttendance(eventId) {
   const tbody = document.getElementById('attendanceTableBody');
   if (!eventId) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999">Select an event</td></tr>'; return; }
   try {
-    const res  = await fetch(`${API_BASE}/api/events/${eventId}/registrations`, { headers: getHeaders() });
+    const res  = await fetch(`${API_BASE}/events/${eventId}/registrations`, { headers: getHeaders() });
     const regs = await res.json();
     if (!regs.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999">No registrations yet</td></tr>'; return; }
     tbody.innerHTML = regs.map(r => `
@@ -178,7 +178,7 @@ async function loadAttendance(eventId) {
 async function markAttend(eventId, userId, btn) {
   btn.disabled = true;
   try {
-    await fetch(`${API_BASE}/api/events/${eventId}/attend/${userId}`, { method:'PATCH', headers: getHeaders() });
+    await fetch(`${API_BASE}/events/${eventId}/attend/${userId}`, { method:'PATCH', headers: getHeaders() });
     showAlert('Attendance marked');
     loadAttendance(eventId);
   } catch(e) { showAlert('Failed', 'error'); btn.disabled = false; }

@@ -4,7 +4,7 @@ const Event        = require('../models/Event');
 const Registration = require('../models/Registration');
 const { protect, adminOnly } = require('../middleware/auth');
 
-/* ─── GET /api/events  — public ─── */
+/* ─── GET /events  — public ─── */
 router.get('/', async (req, res) => {
   try {
     const events = await Event.find({ status: 'active' })
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-/* ─── GET /api/events/all  — admin ─── */
+/* ─── GET /events/all  — admin ─── */
 router.get('/all', adminOnly, async (req, res) => {
   try {
     const events = await Event.find().sort({ createdAt: -1 });
@@ -26,7 +26,7 @@ router.get('/all', adminOnly, async (req, res) => {
   }
 });
 
-/* ─── GET /api/events/stats  — admin dashboard ─── */
+/* ─── GET /events/stats  — admin dashboard ─── */
 router.get('/stats', adminOnly, async (req, res) => {
   try {
     const totalEvents = await Event.countDocuments();
@@ -39,7 +39,7 @@ router.get('/stats', adminOnly, async (req, res) => {
   }
 });
 
-/* ─── GET /api/events/user/my-registrations  — logged in user ─── */
+/* ─── GET /events/user/my-registrations  — logged in user ─── */
 router.get('/user/my-registrations', protect, async (req, res) => {
   try {
     const regs = await Registration.find({ user: req.user._id })
@@ -53,7 +53,7 @@ router.get('/user/my-registrations', protect, async (req, res) => {
 
 
 
-/* ─── POST /api/events  — admin creates event ─── */
+/* ─── POST /events  — admin creates event ─── */
 router.post('/', adminOnly, async (req, res) => {
   try {
     const { eventId, name, description, date, time, location, capacity, category } = req.body;
@@ -72,7 +72,7 @@ router.post('/', adminOnly, async (req, res) => {
 
 
 
-/* ─── POST /api/events/:eventId/register  — user registers ─── */
+/* ─── POST /events/:eventId/register  — user registers ─── */
 router.post('/:eventId/register', protect, async (req, res) => {
   try {
     const event = await Event.findOne({ eventId: req.params.eventId, status: 'active' });
@@ -108,7 +108,7 @@ router.post('/:eventId/register', protect, async (req, res) => {
 
 
 
-/* ─── GET /api/events/:eventId/registrations  — admin ─── */
+/* ─── GET /events/:eventId/registrations  — admin ─── */
 router.get('/:eventId/registrations', adminOnly, async (req, res) => {
   try {
     const event = await Event.findOne({ eventId: req.params.eventId })
@@ -120,7 +120,7 @@ router.get('/:eventId/registrations', adminOnly, async (req, res) => {
   }
 });
 
-/* ─── PATCH /api/events/:eventId/attend/:userId  — admin marks attendance ─── */
+/* ─── PATCH /events/:eventId/attend/:userId  — admin marks attendance ─── */
 router.patch('/:eventId/attend/:userId', adminOnly, async (req, res) => {
   try {
     await Event.updateOne(
@@ -133,7 +133,7 @@ router.patch('/:eventId/attend/:userId', adminOnly, async (req, res) => {
   }
 });
 
-/* ─── GET /api/events/:eventId  — public ─── */
+/* ─── GET /events/:eventId  — public ─── */
 router.get('/:eventId', async (req, res) => {
   try {
     const event = await Event.findOne({ eventId: req.params.eventId });
@@ -144,7 +144,7 @@ router.get('/:eventId', async (req, res) => {
   }
 });
 
-/* ─── PUT /api/events/:eventId  — admin updates event ─── */
+/* ─── PUT /events/:eventId  — admin updates event ─── */
 router.put('/:eventId', adminOnly, async (req, res) => {
   try {
     const event = await Event.findOneAndUpdate(
@@ -159,7 +159,7 @@ router.put('/:eventId', adminOnly, async (req, res) => {
   }
 });
 
-/* ─── DELETE /api/events/:eventId  — admin ─── */
+/* ─── DELETE /events/:eventId  — admin ─── */
 router.delete('/:eventId', adminOnly, async (req, res) => {
   try {
     await Event.findOneAndDelete({ eventId: req.params.eventId });
