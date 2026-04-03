@@ -26,6 +26,10 @@ app.use('/api/users',  require('./routes/users'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/seed',   require('./routes/seed'));
 
+app.get('/api', (req, res) => {
+  res.send('API is working');
+});
+
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'OK', time: new Date() }));
 
@@ -41,6 +45,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Backend API running on port ${PORT}`);
-  console.log(`📦 Seed data → /api/seed`);
+  console.log(`Server running on port ${PORT}`);
 });
