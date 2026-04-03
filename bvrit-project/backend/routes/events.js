@@ -51,16 +51,7 @@ router.get('/user/my-registrations', protect, async (req, res) => {
   }
 });
 
-/* ─── GET /api/events/:eventId  — public ─── */
-router.get('/:eventId', async (req, res) => {
-  try {
-    const event = await Event.findOne({ eventId: req.params.eventId });
-    if (!event) return res.status(404).json({ error: 'Event not found' });
-    res.json(event);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
+
 
 /* ─── POST /api/events  — admin creates event ─── */
 router.post('/', adminOnly, async (req, res) => {
@@ -79,30 +70,7 @@ router.post('/', adminOnly, async (req, res) => {
   }
 });
 
-/* ─── PUT /api/events/:eventId  — admin updates event ─── */
-router.put('/:eventId', adminOnly, async (req, res) => {
-  try {
-    const event = await Event.findOneAndUpdate(
-      { eventId: req.params.eventId },
-      req.body,
-      { new: true }
-    );
-    if (!event) return res.status(404).json({ error: 'Event not found' });
-    res.json({ message: 'Event updated', event });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
 
-/* ─── DELETE /api/events/:eventId  — admin ─── */
-router.delete('/:eventId', adminOnly, async (req, res) => {
-  try {
-    await Event.findOneAndDelete({ eventId: req.params.eventId });
-    res.json({ message: 'Event deleted' });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
 
 /* ─── POST /api/events/:eventId/register  — user registers ─── */
 router.post('/:eventId/register', protect, async (req, res) => {
@@ -165,5 +133,40 @@ router.patch('/:eventId/attend/:userId', adminOnly, async (req, res) => {
   }
 });
 
+/* ─── GET /api/events/:eventId  — public ─── */
+router.get('/:eventId', async (req, res) => {
+  try {
+    const event = await Event.findOne({ eventId: req.params.eventId });
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+    res.json(event);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+/* ─── PUT /api/events/:eventId  — admin updates event ─── */
+router.put('/:eventId', adminOnly, async (req, res) => {
+  try {
+    const event = await Event.findOneAndUpdate(
+      { eventId: req.params.eventId },
+      req.body,
+      { new: true }
+    );
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+    res.json({ message: 'Event updated', event });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+/* ─── DELETE /api/events/:eventId  — admin ─── */
+router.delete('/:eventId', adminOnly, async (req, res) => {
+  try {
+    await Event.findOneAndDelete({ eventId: req.params.eventId });
+    res.json({ message: 'Event deleted' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 module.exports = router;
