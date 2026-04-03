@@ -87,7 +87,7 @@ async function deleteEvent(eventId) {
 async function loadAllUsers() {
   const tbody = document.getElementById('usersTableBody');
   try {
-    const res   = await fetch(`${API_BASE}/api/users/all`, { headers: getHeaders() });
+    const res   = await fetch(`${API_BASE}/users/all`, { headers: getHeaders() });
     const users = await res.json();
     if (!users.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">No users yet.</td></tr>'; return; }
     tbody.innerHTML = users.map(u => `
@@ -111,7 +111,7 @@ async function loadAllUsers() {
 
 async function toggleUser(userId) {
   try {
-    await fetch(`${API_BASE}/api/users/${userId}/toggle`, { method:'PATCH', headers: getHeaders() });
+    await fetch(`${API_BASE}/users/${userId}/toggle`, { method:'PATCH', headers: getHeaders() });
     showAlert('User status updated');
     loadAllUsers();
   } catch(e) { showAlert('Failed', 'error'); }

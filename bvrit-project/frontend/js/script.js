@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!isValidPassword(password)) { errEl.textContent='Password: min 8 chars, uppercase, lowercase, number, underscore'; return; }
 
     try {
-      const res  = await fetch(`${API_BASE}/api/users/register`, {
+      const res  = await fetch(`${API_BASE}/users/register`, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ name, department, rollNumber, username, password })
       });
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const password = document.getElementById('loginPassword').value;
     if (!username||!password) { errEl.textContent='Both fields required'; return; }
     try {
-      const res  = await fetch(`${API_BASE}/api/users/login`, {
+      const res  = await fetch(`${API_BASE}/users/login`, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ username, password })
       });
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const username = document.getElementById('adminName').value.trim();
     const password = document.getElementById('adminPass').value;
     try {
-      const res  = await fetch(`${API_BASE}/api/users/admin-login`, {
+      const res  = await fetch(`${API_BASE}/users/admin-login`, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ username, password })
       });
