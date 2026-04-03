@@ -39,6 +39,18 @@ router.get('/stats', adminOnly, async (req, res) => {
   }
 });
 
+/* ─── GET /api/events/user/my-registrations  — logged in user ─── */
+router.get('/user/my-registrations', protect, async (req, res) => {
+  try {
+    const regs = await Registration.find({ user: req.user._id })
+      .populate('event', 'name date location status')
+      .sort({ createdAt: -1 });
+    res.json(regs);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 /* ─── GET /api/events/:eventId  — public ─── */
 router.get('/:eventId', async (req, res) => {
   try {
@@ -126,6 +138,8 @@ router.post('/:eventId/register', protect, async (req, res) => {
   }
 });
 
+
+
 /* ─── GET /api/events/:eventId/registrations  — admin ─── */
 router.get('/:eventId/registrations', adminOnly, async (req, res) => {
   try {
@@ -151,16 +165,5 @@ router.patch('/:eventId/attend/:userId', adminOnly, async (req, res) => {
   }
 });
 
-/* ─── GET /api/events/user/my-registrations  — logged in user ─── */
-router.get('/user/my-registrations', protect, async (req, res) => {
-  try {
-    const regs = await Registration.find({ user: req.user._id })
-      .populate('event', 'name date location status')
-      .sort({ createdAt: -1 });
-    res.json(regs);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
 
 module.exports = router;
