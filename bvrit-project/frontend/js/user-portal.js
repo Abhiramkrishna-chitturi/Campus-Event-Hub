@@ -43,8 +43,8 @@ function showSection(id, btn) {
 async function loadDashboard() {
   try {
     const [evRes, myRes] = await Promise.all([
-      fetch(`${API_BASE}/api/events`, { headers: getHeaders() }),
-      fetch(`${API_BASE}/api/events/user/my-registrations`, { headers: getHeaders() })
+      fetch(`${API_BASE}/events`, { headers: getHeaders() }),
+      fetch(`${API_BASE}/events/user/my-registrations`, { headers: getHeaders() })
     ]);
     const events = await evRes.json();
     const myRegs = await myRes.json();
@@ -57,8 +57,8 @@ async function loadEvents() {
   const container = document.getElementById('eventsContainer');
   try {
     const [evRes, myRes] = await Promise.all([
-      fetch(`${API_BASE}/api/events`),
-      fetch(`${API_BASE}/api/events/user/my-registrations`, { headers: getHeaders() })
+      fetch(`${API_BASE}/events`),
+      fetch(`${API_BASE}/events/user/my-registrations`, { headers: getHeaders() })
     ]);
     const events = await evRes.json();
     const myRegs = await myRes.json();
@@ -95,7 +95,7 @@ async function loadEvents() {
 async function registerEvent(eventId, name, btn) {
   btn.disabled = true; btn.textContent = 'Registering...';
   try {
-    const res  = await fetch(`${API_BASE}/api/events/${eventId}/register`, { method:'POST', headers: getHeaders() });
+    const res  = await fetch(`${API_BASE}/events/${eventId}/register`, { method:'POST', headers: getHeaders() });
     const data = await res.json();
     if (res.ok) {
       showAlert('✅ ' + data.message);
@@ -114,7 +114,7 @@ async function registerEvent(eventId, name, btn) {
 async function loadMyRegistrations() {
   const container = document.getElementById('myRegsContainer');
   try {
-    const res  = await fetch(`${API_BASE}/api/events/user/my-registrations`, { headers: getHeaders() });
+    const res  = await fetch(`${API_BASE}/events/user/my-registrations`, { headers: getHeaders() });
     const regs = await res.json();
     if (!res.ok || !regs.length) { container.innerHTML = '<p style="color:#666">You haven\'t registered for any events yet.</p>'; return; }
     container.innerHTML = regs.map(r => `
