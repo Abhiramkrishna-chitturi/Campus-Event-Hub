@@ -19,6 +19,8 @@ const EventSchema = new mongoose.Schema({
   capacity:     { type: Number, default: 200 },
   category:     { type: String, enum: ['Sports','Cultural','Technical','Other'], default: 'Other' },
   status:       { type: String, enum: ['active','inactive','completed'], default: 'active' },
+  isDefault:   { type: Boolean, default: false }, // Indicates if the event is a default event
+  isActive:    { type: Boolean, default: false }, // Indicates if the event is active
   registrations: [RegistrationSchema]
 }, { timestamps: true });
 

@@ -184,5 +184,43 @@ async function markAttend(eventId, userId, btn) {
   } catch(e) { showAlert('Failed', 'error'); btn.disabled = false; }
 }
 
+async function loadDefaultEvents() {
+  try {
+    const res = await fetch(`${API_BASE}/events/default`, { headers: getHeaders() });
+    const events = await res.json();
+    const container = document.getElementById('defaultEvents');
+    container.innerHTML = '';
+    events.forEach(event => {
+      const div = document.createElement('div');
+      div.className = 'event-card';
+      div.innerHTML = `
+        <h3>${event.name}</h3>
+        <p>${event.description}</p>
+        <button onclick="toggleEventActivation('${event._id}', ${!event.isActive})">">
+          ${event.isActive ? 'Deactivate' : 'Activate'}
+        </button>
+      `;
+      container.appendChild(div);
+    });
+  } catch (e) { console.error(e); }
+}
+
+async function toggleEventActivation(eventId, isActive) {
+  try {
+    const res = await fetch(`${API_BASE}/events/${eventId}/activate`, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify({ isActive })
+    });
+    if (res.ok) {
+      showAlert('Event updated successfully!');
+      loadDefaultEvents();
+    } else {
+      const err = await res.json();
+      showAlert(err.error, 'danger');
+    }
+  } catch (e) { console.error(e); }
+}
+
 function logout() { localStorage.removeItem('loggedInUser'); localStorage.removeItem('bvritUserData'); window.location.href = 'index.html'; }
 function goHome() { window.location.href = 'index.html'; }

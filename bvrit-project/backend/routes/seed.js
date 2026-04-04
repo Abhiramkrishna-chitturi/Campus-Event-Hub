@@ -21,11 +21,11 @@ router.get('/', async (req, res) => {
 
     // Seed default events
     const defaultEvents = [
-      { eventId:'athenes', name:'ATHENES', description:"BVRIT's most celebrated annual cultural fest", date:'April 20, 2026', time:'10:00 AM', location:'BVRIT Main Campus', capacity:500, category:'Cultural' },
-      { eventId:'avirbhav', name:'AVIRBHAV', description:'Traditional day celebration at BVRIT', date:'March 10, 2026', time:'9:00 AM', location:'BVRIT Auditorium', capacity:300, category:'Cultural' },
-      { eventId:'baja', name:'BAJA', description:"India's leading ATV motorsports competition", date:'March 15, 2026', time:'8:00 AM', location:'BVRIT Ground', capacity:200, category:'Sports' },
-      { eventId:'canoe', name:'CONCRETE CANOE COMPETITION', description:'Engineering marvel on water', date:'April 5, 2026', time:'8:00 AM', location:'BVRIT Water Tank', capacity:100, category:'Technical' },
-      { eventId:'autoexpo', name:'AUTO-EXPO', description:'Exhibition of the fastest and wildest vehicles', date:'April 18, 2026', time:'10:00 AM', location:'BVRIT Parking Lot', capacity:400, category:'Sports' }
+      { eventId:'athenes', name:'ATHENES', description:"BVRIT's most celebrated annual cultural fest", date:'April 20, 2026', time:'10:00 AM', location:'BVRIT Main Campus', capacity:500, category:'Cultural', isDefault: true },
+      { eventId:'avirbhav', name:'AVIRBHAV', description:'Traditional day celebration at BVRIT', date:'March 10, 2026', time:'9:00 AM', location:'BVRIT Auditorium', capacity:300, category:'Cultural', isDefault: true },
+      { eventId:'baja', name:'BAJA', description:"India's leading ATV motorsports competition", date:'March 15, 2026', time:'8:00 AM', location:'BVRIT Ground', capacity:200, category:'Sports', isDefault: true },
+      { eventId:'canoe', name:'CONCRETE CANOE COMPETITION', description:'Engineering marvel on water', date:'April 5, 2026', time:'8:00 AM', location:'BVRIT Water Tank', capacity:100, category:'Technical', isDefault: true },
+      { eventId:'autoexpo', name:'AUTO-EXPO', description:'Exhibition of the fastest and wildest vehicles', date:'April 18, 2026', time:'10:00 AM', location:'BVRIT Parking Lot', capacity:400, category:'Sports', isDefault: true }
     ];
 
     for (const ev of defaultEvents) {

@@ -184,4 +184,26 @@ router.patch('/:eventId/activate', adminOnly, async (req, res) => {
   }
 });
 
+/* ─── GET /events/default  — fetch default events ─── */
+router.get('/default', adminOnly, async (req, res) => {
+  try {
+    const defaultEvents = await Event.find({ isDefault: true });
+    res.json(defaultEvents);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+/* ─── PATCH /events/:id/activate  — activate/deactivate event ─── */
+router.patch('/:id/activate', adminOnly, async (req, res) => {
+  try {
+    const { isActive } = req.body;
+    const event = await Event.findByIdAndUpdate(req.params.id, { isActive }, { new: true });
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+    res.json(event);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 module.exports = router;
